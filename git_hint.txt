@@ -87,5 +87,3 @@ git branch name 创建一个分支  并命名
 合并 需要切换到 master的分支上
 git merge name (要合并的分支)
 删除分支 git branch -d name
-
-分支xxxxx
