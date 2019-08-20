@@ -5,6 +5,8 @@
 进入当前的子目录  cd xxxname
 显示所有文件包括隐藏文件 ls -a
 清理工作目录  clear
+cd ~：回到用户家目录(个人用户目录)
+!!：是执行和显示上一条命令的结果
 
 添加文件到版本库 echo 'git repo2' >> test.txt
 >> 是管道追加的意思 (追加git repo2 到test文件里面)
@@ -33,5 +35,46 @@ git仓库
 删除文件 git rm test.txt(本地删除)
 所以要提交 git commit
 
+删除暂存区 git rm --cached
+
 git复制：Ctrl+insert
 git粘贴：Shift+Insert
+
+
+
+创建ssh key  分享代码 多人合作
+ssh-keygen -t rsa -C "328515384@qq.com"
+cd ~   				到用户目录
+cd .ssh 			进入存取目录
+cat id_rsa.pub   	查看ssh key  公钥
+ssh -T git@github.com  判断本地与github是否连通
+
+添加远程仓库
+git remote add origin https://github.com/wo16feng/honor.git(http)
+本地仓库跟远程仓库关联起来
+git pull origin master
+将本地仓库的文件push到远程仓库
+git push -u origin master 　(-u默认把本地的master与远程的master关联起来)　
+
+已经关联了 origin  需要把旧的删除
+git remote -v 查看远程库信息
+git remote rm origin(删除关联的origin的远程库)
+git remote add origin git@github.com:wo16feng/django-test.git
+
+vim README.md 修改.md文件
+按 i 字母进入插入（insert）状态
+先按esc键，退出插入模式，然后按住shift键，并连按两次z字符，即可保存刚才的编辑并退出vim编辑状态！！！
+
+
+克隆仓库 (本地要克隆的位置 不能有.git文件)
+git clone git@github.com:wo16feng/django-test.git 克隆到本地
+git push(不需要 -u origin master 克隆下来已经绑定了)
+
+
+标签管理
+git tag  查看所有标签
+创建标签  git tag name
+指定提交信息 git tag -a name -m 'commit'
+删除标签 git tag -d name
+标签发布 git push origin name
+
