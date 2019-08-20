@@ -28,7 +28,10 @@ git仓库
 清理工作区 把工作区文件恢复原先模样  git checkout -- test.txt
 
 获取提交版本的key    git log
+回滚到对应的版本   git reset hard keyxxx
 
+删除文件 git rm test.txt(本地删除)
+所以要提交 git commit
 
 git复制：Ctrl+insert
 git粘贴：Shift+Insert
