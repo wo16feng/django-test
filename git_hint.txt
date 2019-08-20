@@ -1,0 +1,24 @@
+显示当前目录    pwd
+显示目录当前所有的文件 及时间  ll
+上一级目录  cd ..
+创建文件夹  mkdir xxxname
+进入当前的子目录  cd xxxname
+显示所有文件包括隐藏文件 ls -a
+
+添加文件到版本库 echo 'git repo2' >> test.txt
+>> 是管道追加的意思 (追加git repo2 到test文件里面)
+
+展示当前文件的内容 cat test.txt
+
+配置用户信息
+git config --global user.name "wo16feng"
+git config --global user.email "328515384@qq.com"
+
+git仓库
+初始化版本库 -  git init
+
+添加文件到版本库
+添加  git add
+提交  git commit -m '描述'
+
+查看仓库状态  git status
