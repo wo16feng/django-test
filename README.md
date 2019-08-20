@@ -1,2 +1,1 @@
-second commit
 # django-test
