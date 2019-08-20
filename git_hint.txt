@@ -27,6 +27,8 @@ git仓库
 把暂存区的修改取消回滚 git reset HEAD test.txt
 清理工作区 把工作区文件恢复原先模样  git checkout -- test.txt
 
+获取提交版本的key    git log
+
 
 git复制：Ctrl+insert
 git粘贴：Shift+Insert
