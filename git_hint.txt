@@ -106,3 +106,7 @@ git fetch origin 远程分支名x:本地分支名x
 #建立分支(建立映射关系的作用)       git branch --set-upstream-to origin/远程分支名  本地分支名
 git remote show origin  #查看远程分支和本地分支的对应关系
 git remote prune origin #删除远程仓库已经删除过的分支
+
+
+
+.gitignore 文件为忽略git内容文件
