@@ -7,6 +7,7 @@
 清理工作目录  clear
 cd ~：回到用户家目录(个人用户目录)
 !!：是执行和显示上一条命令的结果
+删除文件  rm name
 
 添加文件到版本库 echo 'git repo2' >> test.txt
 >> 是管道追加的意思 (追加git repo2 到test文件里面)
@@ -76,7 +77,7 @@ git tag  查看所有标签
 创建标签  git tag name
 指定提交信息 git tag -a name -m 'commit'
 删除标签 git tag -d name
-标签发布 git push origin name
+标签发布远程 git push origin name
 删除远程 git push origin :refs/tags/name 
 
 
@@ -87,3 +88,19 @@ git branch name 创建一个分支  并命名
 合并 需要切换到 master的分支上
 git merge name (要合并的分支)
 删除分支 git branch -d name
+
+
+远程分支（remote branch）
+#查看远程分支   git branch -r
+#拉取远程分支并创建本地分支(映射关系)   git checkout -b 本地分支 origin/远程分支
+-b 是创建新分支，并没有同步远程分支，应该不要加的。不加是创建并同步
+
+该方式会在本地新建分支x，但是不会自动切换到该本地分支x，需要手动checkout 
+本地分支不会和远程分支建立映射关系
+git fetch origin 远程分支名x:本地分支名x 
+全部取回本地：git fetch
+
+#拉取远程分支   git pull origin 远程分支
+#建立分支(建立映射关系的作用)       git branch --set-upstream-to origin/远程分支名  本地分支名
+git remote show origin  #查看远程分支和本地分支的对应关系
+git remote prune origin #删除远程仓库已经删除过的分支
