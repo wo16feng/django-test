@@ -1,1 +1,125 @@
 base-lore-learn
+
+第一行添加注释
+# -*- coding: utf-8 -*-
+目的是告诉Python解释器，用UTF-8编码读取源代码。然后用Notepad++另存为...并选择UTF-8格式保存
+
+2**n    2的N次方
+
+list 是数学意义上的有序集合 list中的元素是按照顺序排列的。(相当于数组)
+L.pop(-1) L.reverse() L.append() L.extend(list)
+L.insert(index,obj)  L.remove(obj)移除列表中某个值的第一个匹配项
+L.values() L.itervalues() 循环是后者更省内存
+
+dict 是无序的 (字典) (特点是查找速度快) 内存占用比list大
+for key,value in dic.items():
+	xx
+
+set  集合 无序key不可重复,会去掉重复元素 不变对象 
+s.add(x)  s.remove(x)
+任何可变对象是不能放入set中
+s = set(['Adam', 'Lisa', 'Paul'])             s = set(['Adam', 'Lisa', 'Paul'])
+L = ['Adam', 'Lisa', 'Bart', 'Paul']          L = ['Adam', 'Lisa', 'Bart', 'Paul']
+m = set(L)                                    s = s^set(L)
+p = s - m                                     print(s)
+q = m - s
+s = p | q
+print s     ===  set(['Bart'])
+
+xrange比range性能好 不需要一下子开辟一块很大的内存，特别是数据量比较大的时候
+用法是一样的 xrange和range这两个基本是使用在循环的时候 输出一个列表的时候，就必须要使用range了
+
+递归函数  不能太多层 
+函数作为参数 叫做高阶函数
+map(f,list) 每个元素都到f函数执行  返回的list,不改变list而是返回新的list
+reduce(f,list,初始值)函数 函数 f 必须接收两个参数 没有初始值 list的前两个值为参数的值 再与 第三参数 继续求值  移到没有了参数 返回
+filter(f,list)  对每个元素进行过滤 用f判断
+求%1 == 0 可以判断是否是整数
+sorted(list,cmp=None, key=None,reverse=False)函数可对list进行排序
+如果 x 应该排在 y 的前面，返回 -1，如果 x 应该排在 y 的后面，返回 1
+
+返回函数可以延后执行
+def calc_prod(lst):
+    def cj():
+        return reduce(lambda x, y : x * y, lst)
+    return cj
+f = calc_prod([1, 2, 3, 4])
+print f()
+闭包的特点是返回的函数还引用了外层函数的局部变量，所以，要正确使用闭包，就要确保引用的局部变量在函数返回后不能变 (可再嵌套一个函数)
+
+匿名函数  lambda x:x*2  省累 return
+
+
+对于有序集合，元素确实是有索引的  enumerate() 函数
+for index, name in enumerate(L):
+
+zip()函数可以把两个 list 变成一个 list：
+zip([10, 20, 30], ['A', 'B', 'C'])  ==>[(10, 'A'), (20, 'B'), (30, 'C')]
+
+string.join(seq)
+以 string 作为分隔符，将 seq 中所有的元素(的字符串表示)合并为一个新的字符串
+string.capitalize()把字符串的第一个字符大写
+isinstance(x, str) 可以判断变量 x 是否是字符串
+s.strip(rm) 移除开头结尾指定字符 默认删除空白符（包括'\n', '\r', '\t', ' ')
+
+装饰器  @decorator    (有点像继承  )
+定义了一个函数 
+想在运行时候动态的增加功能
+又不想改动函数本身的代码 
+本质是个闭包函数  返回新的函数   @log函数 = >
+def logtime(x_canshu):                              def logtime(f):
+	def log_decorator(f):                               def newPrintTime(*args**kw):
+		def newPrintTime(n):                     			print time.time()
+			print x_canshu                                  return f(*args**kw)
+			print time.time()                    		return newPrintTime
+			return f(n)                          	@logtime	
+		return newPrintTime                      	def printTime(n):
+	return log_decorator                            	print n
+@logtime('xx')                                      printTime('1989-12-27')
+def printTime(n):                            
+	print n                                  	
+printTime('1989-12-27')                      
+有些属性会改变  要完善装饰器
+要加上 @functools.wraps(f)  对原函数的属性复制
+加在 函数f 与 参数n 之间
+
+
+*args是非关键字参数，用于元组，**kw是关键字参数，用于字典
+*args == f(1,2,3)
+**kw == f(a=1,b=2,c=3)
+def f(*args,**kw)
+
+functools.partial把一个参数多函数变成参数少的新函数，少的参数需要在创建时指定默认值
+int2 = functools.partial(int, base=2)
+
+
+类的关键字 参数赋值
+AttributeError 获取属性获取不到的错误
+把属性弄成私有的属性 用__xxx
+读取私有的属性 可以用  p._P.__xxx  实例._实例类名.__xxx(私有属性)
+__new__ 比__init__ 先调用
+当实例属性和类属性重名时，实例属性优先级高
+
+class xxx(object):
+	def __new__(cls,*args,**kwargs):
+		return object.__new__(cls,*args,**kwargs)
+	def __init__(self,**kw):
+		self.__dict__.update(kw)
+		或者
+		for k,v in kw.	():
+            setattr(self,k,v)
+			
+获取类私有可以在类加函数   把方法绑定在类上 在函数上加  @classmethod 就是类方法而非实例方法
+def xxx(cls):
+	return cls.__yyyy
+
+给实例动态添加方法 用 types.MethodType
+p1.get_grade = types.MethodType(fn_get_grade, p1, Person)
+fn_get_grade要会参数 self
+
+
+特殊方法 魔法方法 __xxx__
+
+get/set 方法
+@property装饰(只读)  装饰get   @方法名.setter    装饰set
+要限制添加的属性 __slots__ = ('xx','xxxx') 可操作的属性名  其他就不可操作
