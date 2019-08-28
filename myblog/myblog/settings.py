@@ -12,34 +12,35 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)根目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret!  安全码
 SECRET_KEY = '#ba0a2=o69noay6h*x02m_jgn)=@o2f#ot1!z8pef=el3gr4aa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#允许进入的地址其他屏蔽
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
-INSTALLED_APPS = [
+INSTALLED_APPS = [ #已安装的应用
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog'
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [#中间键 自带工具集(一般不用管)
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,9 +50,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#url的根文件 是指urls.py的文件
 ROOT_URLCONF = 'myblog.urls'
 
-TEMPLATES = [
+TEMPLATES = [#模板 html文件 配置
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -67,12 +69,13 @@ TEMPLATES = [
     },
 ]
 
+#wsgi 一般不管
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+#数据库配置  实际其他数据库打开上面的连接
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -83,7 +86,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
+#密码认证有关
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -100,11 +103,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# Internationalization 国际化
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
+#美式英语
+LANGUAGE_CODE = 'zh-hans'#en-us zh-hans  zh-hant
+#时区
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -116,5 +119,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+#静态文件的地址
 STATIC_URL = '/static/'

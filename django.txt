@@ -1,1 +1,156 @@
-django
+django 
+进入项目目录 打开cmd 输入 django-admin startproject namexxx
+cmd 中输入 python manage.py runserver post     post(默认8000)
+
+manage 与项目进行交互的命令行工具集的入口  项目管理器
+
+settings 项目的总配置文件 包含数据库 web应用 时间等各种配置
+
+urls   配置文件
+所有地址页面都需要我们自己去配置其url
+
+
+wsgi 服务器网关接口  一般不动 不怎么用得到
+应用与web服务器之间的接口
+
+===================创建应用=========================================
+manage.py同级目录 打开cmd  命令输入 python manage.py startapp nameblog
+应用名添加到settings中的 INSTALLED_APPS
+
+migrations (数据迁移模块) 自动生成的 一般不用管
+admin  当前应用的后台管理系统配置
+apps   当前应用的一些配置
+models 数据模块  是有orm框架
+tests 自动化测试模块
+views 执行响应的代码所在模块  代码逻辑处理的主要地点 (大部分的代码在这边写的)
+
+===================创建第一个响应页面==================================
+# 每一个请求都需要一个函数来处理   函数必须返回一个响应
+函数必须存在一个参数 一般约定为 request
+每个响应函数 对应一个url
+
+编辑urls.py
+每个url都以url的形式写出来  url函数放在urlpatterns列表中
+url有三个参数  地址url, 对应的方法, 名称
+url的空字符串'^$'   path('^&', views.index), ^以什么开头  $以什么结尾
+path('^index&', views.index)
+另一种方法include
+path('blog/', include('blog.urls')) //导入应用的urls 配置
+
+应用下url 中在 urlpatterns之前 加上 appname
+app_name = '[blog]' 用于 templates 中的超链接
+
+===================创建第一个页面templates==模板================================
+html文件 使用了Django模板语言 (DTL) 可以使用第三方模板(如Janja2) 改 TEMPLATES 下的 BACKEND
+
+
+步骤
+在app根目录下创建名Templates的目录
+在该目录下创建html文件
+在view.py中返回render()
+
+
+DTL初步使用
+render()函数支持一个dict类型参数
+该字典是后台传递模板的参数,键位参数名
+在模板中使用{{参数名}}来直接使用
+对象的话  {{对象参数名.参数}} 使用
+
+模板for循环
+{%for xx in xxxs %}
+	html语句
+{%endfor%}     必带
+
+{% if xxx %}
+{% elif xxx %}
+{% else %}
+{% endif %}    必带
+
+未了解决多个应用 templates html文件同名  照成打开页面不对 
+(Django查找 templates 为以为 INSTALLED_APPS 中的添加顺序查找 templates)
+需要在 templates的目录下创建以app名为名称的目录
+
+==========================Models==============================
+通常 一个model对应数据库的一张数据表  一般以类的形式表现
+包含一些基本字段以及数据的一些行为
+orm  对象关系映射 实现 不需要编写sql语句 
+
+步骤 
+在应用根目录下创建models.py 并引入models模块
+创建类 继承models.Model 该类即是一张数据表
+类中 创建数据表的字段
+attr = models.CharField(max_length = 64)
+
+命令在manage同级目录
+执行 python manage.py makemigrations app名(可选)      准备
+再执行 python manage.py migrate                        动作
+
+查看
+执行完 在app/makemigrations/目录下生成移植文件
+查看SQL语句
+执行 python manage.py sqlmigrate 应用名 文件id
+python manage.py sqlmigrate blog 0001 
+
+根目录下的db.sqlite3
+
+取数据
+views 中import models
+acticle = models.Acticle.objects.get(pk=1)
+render(request,page,{'acticle':acticle})
+
+
+==================Admin  自动化数据管理界面 后台管理系统===================
+创建超级用户   python manage.py createsuperuser name
+localhisr:8000/admin/  admin入口
+修改settings 中LANGUAGE_CODE = 'zh_Hans'  可修改成中文
+
+配置应用
+在admin.py中引入自身的models模块  
+编辑admin.py  admin.site.register(models.Article)
+
+创建admin的配置类
+clase ArticleAdmin(admin.ModelAdmin)
+注册: admin.site.register(Article,ArticleAdmin)
+显示其他字段 list_display( 'tiele' ,'content')  list_display同时支持tuple 和 list
+过滤器 list_filter = ('time',)
+
+URL	传递参数  
+在响应函数中 request 后 ,加上参数
+使用 request.POST['参数名'] 获取表单数据post字典
+使用 models.Acticle.objects.create(title,content) 创建对下
+
+旧版
+url正则表达式:r'^article/(?P<article_id>[0-9]+)$'
+url正则中的组名必须和参数名一样
+新版
+url 表达式  'article/<int:article_id>'
+组名必须和参数名一样   <类型:xxx>
+
+
+==== 超链接 =====
+django 中的超链接  href后面是目标地址
+templates 中可以用 "{%url 'app_name:url_name' param%}"
+其中 app_name 和 ul_name 都在url中配置
+
+根url 写在 include()的第二个参数位置 , namespace = 'blog'
+或者是 在应用下的url()的第三个参数位置 , name = 'article'
+主要取决于是否使用 include 引用了另一个url配置文件
+
+修改数据
+article.title = title
+article.save()
+
+=====过滤器=====
+templates 过滤器  {{value|filter}}
+{{参数 | 过滤器}} 可以叠加的 | filter | filter
+{{ list | length}} 就是list长度 不是list的内容了 
+{{article.id | default:"0" }}
+
+=====Django shell==
+python manage.py shell 启动
+自动引入我们的项目环境 用他与我们的项目进行交互
+进行一些调试工作  测试未知的方法
+===========================================================================
+
+
+
