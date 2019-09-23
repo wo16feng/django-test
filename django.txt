@@ -102,7 +102,7 @@ render(request,page,{'acticle':acticle})
 ==================Admin  自动化数据管理界面 后台管理系统===================
 创建超级用户   python manage.py createsuperuser name
 localhisr:8000/admin/  admin入口
-修改settings 中LANGUAGE_CODE = 'zh_Hans'  可修改成中文
+修改settings 中LANGUAGE_CODE = 'zh_hans'  可修改成中文
 
 配置应用
 在admin.py中引入自身的models模块  

@@ -1,4 +1,6 @@
-base-lore-learn
+用外面变量
+global path
+path = fo.__next__()[5:].splitlines()[0]
 
 第一行添加注释
 # -*- coding: utf-8 -*-

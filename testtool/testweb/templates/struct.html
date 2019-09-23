@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结构体</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .wrapper {
+            padding: 22px 106px 10px 40px;
+            background: #FFF;
+        }
+
+        body {
+            font-family: "Microsoft YaHei";
+            color: #333;
+            background: #FFF;
+
+        }
+
+        .common-header {
+            padding-top: 10px;
+            border-bottom: 1px solid #DDD;
+            min-width: 550px;
+        }
+
+        .part {
+            height: 32px;
+            line-height: 32px;
+            display: inline;
+            float: left;
+            padding: 0 10px 10px 0px;
+            padding-bottom: 40px;
+        }
+
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:after {
+            display: block;
+            content: '\200B';
+            height: 0;
+            clear: both;
+        }
+
+        .wrap-input {
+            position: relative;
+            display: inline;
+            float: left;
+            line-height: 30px;
+        }
+
+        .submit-a {
+            background: #546478;
+            color: #FFF;
+            padding: 0 12px;
+            cursor: pointer;
+            width: 50px;
+            outline: none;
+            border: #FFFFFF;
+        }
+
+        label {
+            font-size: 14px;
+            float: left;
+            font-weight: normal;
+            cursor: default;
+        }
+
+        input {
+            width: 120px;
+            height: 30px;
+            padding: 0 0 0 10px;
+        }
+
+        .common-table {
+            padding-top: 15px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            font-size: inherit;
+            font-weight: normal;
+            border-color: grey;
+            display: table;
+        }
+
+        thead,
+        tbody {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+            font-size: 12px;
+        }
+
+        thead,
+        tr:nth-child(2n) {
+            background: #f5f6fa;
+        }
+
+        td {
+            height: 39px;
+            border: 1px solid #DDD;
+            text-align: center;
+        }
+
+        .modal-header {
+            border-radius: 6px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            height: 14px;
+            background: skyblue;
+        }
+
+        .close {
+            opacity: .5;
+        }
+
+        .modal-dialog {
+            margin-top: 10%;
+        }
+
+        fieldset {
+            border: 1px solid #D8D8D8;
+            padding: 10px;
+        }
+
+        legend {
+            padding: 3px 8px;
+            font-weight: 700;
+            border: 1px solid #D8D8D8;
+            background-color: #F9F9F9;
+            font-size: 12px;
+            width: auto;
+        }
+
+        .input-hidden {
+        }
+
+        .modal-footer {
+            text-align: left;
+        }
+
+        .btn-default {
+            height: 30px;
+            border-radius: 0px;
+            background: #546478;
+            cursor: pointer;
+
+            outline: none;
+            border: #FFFFFF;
+            color: #FFFFFF;
+        }
+
+        .btn-default:focus:focus,
+        .btn-default:hover,
+        .btn-default:active:focus {
+            border-radius: 0px;
+            outline: none;
+            background: #546478;
+            color: #FFFFFF;
+        }
+
+        .label-modal {
+            font-size: 12px;
+            float: left;
+            margin-right: 20px;
+            width: 60px;
+        }
+
+        .input-modal,
+        .input-modal-des {
+            height: 20px;
+            font-size: 12px;
+        }
+
+        .select-modal {
+            height: 20px;
+            border-style: inset;
+            border-color: initial;
+            border-image: initial;
+        }
+
+        .table-input {
+            border: 0;
+            background: none;
+            text-align: left;
+            width: 30px;
+            align-items: center;
+        }
+
+        a {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 修改模态框（Modal） -->
+<div class="modal bs-example-modal-lg" id="reviseModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="">
+                <button type="button" class="close" style="margin-top: -10px;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h6 class="modal-title" style="margin-top: -7px;" id="modalLabel">编辑模块</h6>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'testweb:struck_revise' %}">
+                    {% csrf_token %}
+                    <fieldset class="input-hidden">
+                        <legend>基本信息</legend>
+                        <input type="hidden" name="revise_struck_id" class="input-hidden">
+                        <div class="form-group">
+                            <label class="label-modal">结构体名</label>
+                            <input type="text" class="input-modal" name="revise_struck_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="label-modal">功能备注</label>
+                            <input type="text" class="input-modal-des" name="revise_struck_des">
+                        </div>
+                        <div class="form-group">
+                            <label class="label-modal">所属模块</label>
+                            <select class="select-modal" id="revise_struck_select" name="revise_struck_select"></select>
+                        </div>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg" id="fieldinfoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="">
+                <button type="button" class="close" style="margin-top: -10px;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h6 class="modal-title" style="margin-top: -7px;" id="modalLabel">编辑协议</h6>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow: auto">
+                <div class="common-header clear">
+                    <form method="post" action="{% url 'testweb:struck_table_action' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="fieldinfo_struckid" id="fieldinfo_struckid" class="input-hidden">
+                        <div class="part">
+                            <label>字段名：</label>
+                            <div class="wrap-input">
+                                <input type="text" name="fieldinfo_name" id="fieldinfo_name" placeholder="请输入字段名">
+                            </div>
+                        </div>
+                        <div class="part">
+                            <label>结构体：</label>
+                            <div class="wrap-input">
+                                <select name="fieldinfo_struct" id="fieldinfo_struct">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="part">
+                            <label>类型：</label>
+                            <div class="wrap-input">
+                                <select name="fieldinfo_type" id="fieldinfo_type">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="part">
+                            <label>字段含义：</label>
+                            <div class="wrap-input">
+                                <input type="text" name="fieldinfo_des" id="fieldinfo_des" placeholder="请输入字段含义">
+                            </div>
+                        </div>
+                        <div class="part">
+                            <input type="submit" class="submit-a" value="添加">
+                        </div>
+                        <label></label>
+                    </form>
+                </div>
+                <div class="common-table">
+                    <form method="post" action="{% url 'testweb:struck_table_sort' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="fieldinfo_struckid_table" id="fieldinfo_struckid_table"
+                               class="input-hidden">
+                        <table>
+                            <thead>
+                            <tr>
+                                <td>字段名</td>
+                                <td>类型</td>
+                                <td>字段含义</td>
+                                <td>字段排序(点击可修改)</td>
+                                <td>操作</td>
+                            </tr>
+                            </thead>
+                            <tbody id="fieldinfo_table">
+                            </tbody>
+                        </table>
+                        <div class="common-header clear">
+                            <input type="submit" class="btn btn-default" value="提交排序">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg" id="revisefieldModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="">
+                <button type="button" class="close" style="margin-top: -10px;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h6 class="modal-title" style="margin-top: -7px;" id="modalLabel">编辑模块</h6>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'testweb:struck_table_revise' %}">
+                    {% csrf_token %}
+                    <fieldset class="input-hidden">
+                        <legend>基本信息</legend>
+                        <input type="hidden" name="revise_field_id" class="input-hidden">
+                        <div class="form-group">
+                            <label class="label-modal">字段名</label>
+                            <input type="text" class="input-modal" name="revise_field_name" id="revise_field_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="label-modal">数据结构</label>
+                            <select class="select-modal" id="revise_field_select" name="revise_field_select"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="label-modal">类型</label>
+                            <select class="select-modal" id="revise_field_type" name="revise_field_type"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="label-modal">字段含义</label>
+                            <input type="text" class="input-modal-des" name="revise_field_des" id="revise_field_des">
+                        </div>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper">
+    <form method="post" action="{% url 'testweb:struck_action' %}">
+        {% csrf_token %}
+        <div class="common-header clear">
+            <div class="part">
+                <label>结构体名：</label>
+                <div class="wrap-input">
+                    <input type="text" name="struck_name" placeholder="请输入结构体名">
+                </div>
+            </div>
+            <div class="part">
+                <label>功能备注：</label>
+                <div class="wrap-input">
+                    <input type="text" style="width: 400px" name="struck_des" placeholder="请输入备注信息">
+                </div>
+            </div>
+            <div class="part">
+                <label>所属模块：</label>
+                <select name="add_struck" id="add_struck"></select>
+            </div>
+            <div class="part">
+                <input type="submit" name="search" class="submit-a" value="添加">
+            </div>
+            <label></label>
+        </div>
+    </form>
+    <form method="post" action="{% url 'testweb:struck_find' %}">
+        {% csrf_token %}
+        <div class="common-header clear">
+            <div class="part">
+                <label>结构体名：</label>
+                <div class="wrap-input">
+                    <input type="text" name="struck_name" placeholder="请输入结构体名">
+                </div>
+            </div>
+            <div class="part">
+                <label>所属模块：</label>
+                <select name="find_struck" id="find_struck"></select>
+            </div>
+            <div class="part">
+                <input type="submit" name="search" class="submit-a" value="搜索">
+            </div>
+            <label></label>
+        </div>
+    </form>
+    <div class="common-header clear">
+        <div class="part">
+            <a class="btn btn-default" href="{% url 'testweb:struck_creat' 0 %}" style="margin-top: -5px">生成全部结构体</a>
+        </div>
+        <label></label>
+    </div>
+
+    <div class="common-table">
+        <table>
+            <thead>
+            <tr>
+                <td>结构体编号</td>
+                <td>结构体名</td>
+                <td>功能备注</td>
+                <td>所属模块</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tem in data %}
+                <tr>
+                    <td>{{ tem.id }}</td>
+                    <td>{{ tem.name }}</td>
+                    <td>{{ tem.des }}</td>
+                    <td>{{ tem.owner }}</td>
+                    <td>
+                        <a href="" data-toggle="modal" data-target="#reviseModal" data-struck_name="{{ tem.name }}"
+                           data-struck_des="{{ tem.des }}" data-struck_id="{{ tem.id }}"
+                           onclick="resiveStruck({{ tem.ownerid }})">修改</a>
+
+                        <a href="" data-toggle="modal" data-target="#fieldinfoModal" data-struck_id="{{ tem.id }}"
+                           onclick="onShowFieldInfo({{ tem.id }})">查看/编辑内容</a>
+                        <a href="{% url 'testweb:struck_creat' tem.id %}">生成文件</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $('#reviseModal').modal({
+        backdrop: false
+    });
+    $('#reviseModal').modal('hide');
+    $('#reviseModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);// Button that triggered the modal
+        var struck_name = button.data('struck_name'); // Extract info from data-* attributes
+        var struck_des = button.data('struck_des');
+        var struck_id = button.data('struck_id');
+        var modal = $(this);
+        modal.find('.input-hidden').val(struck_id)
+        modal.find('.input-modal').val(struck_name)
+        modal.find('.input-modal-des').val(struck_des)
+    });
+
+    resiveStruck = function (struck_id) {
+        revise_struck_select = $('#revise_struck_select');
+        revise_struck_select.empty();
+        $.get('/testweb/struct/revise/select' + struck_id, function (dic) {
+            $.each(dic, function (index, item) {
+                revise_struck_select.append('<option value="' + item.id + '">' + item.owner + '</option>')
+            });
+        });
+    };
+
+    $(function () {
+        addstruck = $('#add_struck');
+        findstruck = $('#find_struck');
+        addstruck.empty();
+        findstruck.empty();
+        getAllStruct(addstruck, findstruck);
+    });
+
+    getAllStruct = function (add_struck, find_struck) {
+        $.get('/testweb/struct/select', function (dic) {
+            $.each(dic, function (index, item) {
+                add_struck.append('<option value="' + item.id + '">' + item.owner + '</option>')
+                find_struck.append('<option value="' + item.id + '">' + item.owner + '</option>')
+            });
+        });
+    };
+
+    $('#fieldinfoModal').modal({
+        backdrop: false
+    });
+    $('#fieldinfoModal').modal('hide');
+    $('#fieldinfoModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);// Button that triggered the modal
+        var struck_id = button.data('struck_id');
+        if (struck_id) {
+            var modal = $(this);
+            modal.find('.input-hidden').val(struck_id)
+        }
+    });
+
+    $(function () {
+        fieldinfo_struct = $('#fieldinfo_struct');
+        fieldinfo_type = $('#fieldinfo_type');
+        fieldinfo_struct.change(function () {
+            fieldinfo_type.empty();
+            onShowFieldType(this.value, fieldinfo_type)
+        });
+        if (0{{ struct_id }}) {
+            $('#fieldinfo_struckid_table').val({{ struct_id }});
+            $('#fieldinfo_struckid').val({{ struct_id }});
+            $('#fieldinfoModal').modal('show');
+            onShowFieldInfo(0{{ struct_id }});
+        }
+    });
+
+    onShowFieldInfo = function (struck_id) {
+        fieldinfo_type = $('#fieldinfo_type');
+        fieldinfo_struct = $('#fieldinfo_struct');
+        fieldinfo_type.empty();
+        fieldinfo_struct.empty().append('<option value="' + 0 + '">' + '否' + '</option>');
+        fieldinfo_struct.append('<option value="' + 1 + '">' + '是' + '</option>');
+        this.onShowFieldType(0, fieldinfo_type);
+
+        fieldinfo_table = $('#fieldinfo_table');
+        fieldinfo_table.empty();
+        this.onShowTableInfo(struck_id, fieldinfo_table);
+    };
+    onShowFieldType = function (a, b) {
+        $.get('/testweb/module/code/?type=' + a, function (dic) {
+            $.each(dic, function (index, item) {
+                b.append('<option value="' + item.id + '">' + item.content + '</option>')
+            })
+        })
+    };
+
+    onShowTableInfo = function (a, b) {
+        $.get('/testweb/struct/table/info' + a, function (dic) {
+            $.each(dic, function (index, item) {
+                b.append('<tr>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.typename + '</td>' +
+                    '<td>' + item.des + '</td>' +
+                    '<td><input type="text" value="' + item.sortid + '" class="table-input" name="sorttable' + index + '">' + '</td>' +
+                    '<td><a href="#" data-toggle="modal" data-target="#revisefieldModal" data-field_id="' + item.id + '" onclick="onShowFieldTable(' + item.id + ')">' + '修改' + '</a>' +
+                    '<a href="{% url 'testweb:struck_table_del' 0%}' + item.id + '">' + '删除' + '</a></td>' +
+                    +'</tr>')
+            })
+        })
+    };
+
+    $('#revisefieldModal').modal({
+        backdrop: false
+    });
+    $('#revisefieldModal').modal('hide');
+    $('#revisefieldModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);// Button that triggered the modal
+        var struck_id = button.data('field_id');
+        var modal = $(this);
+        modal.find('.input-hidden').val(struck_id)
+    });
+
+
+    $(function () {
+        revise_field_select = $('#revise_field_select');
+        revise_field_type = $('#revise_field_type');
+        revise_field_select.change(function () {
+            revise_field_type.empty();
+            onShowFieldType(this.value, revise_field_type)
+        });
+    });
+
+    onShowFieldTable = function (struck_id) {
+        revise_field_type = $('#revise_field_type');
+        revise_field_select = $('#revise_field_select');
+        revise_field_type.empty();
+        revise_field_select.empty();
+        revise_field_name = $('#revise_field_name');
+        revise_field_des = $('#revise_field_des');
+        $.get('/testweb/struct/table/revise' + struck_id, function (dic) {
+            $.each(dic, function (index, item) {
+                if (Number(item.id) == -1) {
+                    if (Number(item.is_struct) == 0) {
+                        revise_field_select.append('<option value="' + 0 + '">' + '否' + '</option>');
+                        revise_field_select.append('<option value="' + 1 + '">' + '是' + '</option>');
+                    } else {
+                        revise_field_select.append('<option value="' + 1 + '">' + '是' + '</option>');
+                        revise_field_select.append('<option value="' + 0 + '">' + '否' + '</option>');
+                    }
+                    revise_field_name.val(item.name);
+                    revise_field_des.val(item.des);
+                } else {
+                    revise_field_type.append('<option value="' + item.id + '">' + item.name + '</option>')
+                }
+            });
+        });
+    };
+
+</script>
+</body>
+</html>

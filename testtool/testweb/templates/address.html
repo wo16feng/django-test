@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地址信息</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<select id="pro">
+    <option value="0">请选择省</option>
+</select>
+<select id="city">
+    <option value="">请选择市</option>
+</select>
+<select id="dis">
+    <option value="">请选择县</option>
+</select>
+</body>
+<script>
+    address = function (a, b) {
+        $.get('/testweb/address/' + a, function (dic) {
+            $.each(dic, function (index, item) {
+                console.log('xxxxxxxxxx:' + item.address)
+                b.append('<option value="' + item.id + '">' + item.address + '</option>')
+            })
+        })
+    };
+    $(function () {
+        pro = $('#pro');
+        city = $('#city');
+        dis = $('#dis');
+        address(0, pro);
+        pro.change(function () {
+            console.log('xxxxxxxxxx'+ this.value)
+            city.empty().append('<option value="' + '">' + '请选择市' + '</option>');
+            dis.empty().append('<option value="' + '">' + '请选择县' + '</option>');
+            if(this.value == 0){
+                address(-1, city)
+            }else{
+                address(this.value, city)
+            }
+        });
+        city.change(function () {
+            dis.empty().append('<option value="' + '">' + '请选择县' + '</option>');
+            address(this.value, dis)
+        })
+    })
+</script>
+</html>
