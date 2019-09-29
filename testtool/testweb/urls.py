@@ -45,6 +45,8 @@ urlpatterns = [
     path('xlsxtable/init', views.xlsxtable_init, name='xlsxtable_init'),#生成表格模板
     path('xlsxtable/save', views.xlsxtable_save, name='xlsxtable_save'),#生成表格模板
 
+    path('xlsxhtml/', views.xlsxhtml, name='xlsxhtml'),#结构体列表
+
     # test
     path('address/', views.address, name='address'),
     path('address/<int:address_id>', views.addressAPI, name='address'),

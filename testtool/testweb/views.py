@@ -579,6 +579,11 @@ def xlsxtable_save(request):
     fo.close()
     return render(request, 'showmsg.html', {'msg': "生成成功", 'page': 2})
 
+def xlsxhtml(request):
+    return render(request, 'jsxlsx.html')
+
+
+
 
 
 

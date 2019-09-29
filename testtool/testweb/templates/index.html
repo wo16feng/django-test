@@ -112,7 +112,7 @@
                         <span class="caret"></span>
                     </h5>
                 </div>
-                {% if page != '/testweb/xlsxtable' %}
+                {% if page != '/testweb/xlsxtable' and page != '/testweb/xlsxhtml' %}
                     <div id="collapseOne" class="list-group collapse in">
                 {% else %}
                     <div id="collapseOne" class="list-group collapse">
@@ -137,7 +137,7 @@
                         <span class="caret"></span>
                     </h5>
                 </div>
-                {% if page == '/testweb/xlsxtable' %}
+                {% if page == '/testweb/xlsxtable' or page == '/testweb/xlsxhtml' %}
                     <div id="collapseTwo" class="list-group collapse in">
                 {% else %}
                     <div id="collapseTwo" class="list-group collapse">
@@ -146,6 +146,12 @@
                        style="height: 50px;">
                         <h5 class="text-center" style="color: white">
                             生成表格模板
+                        </h5>
+                    </a>
+                    <a href="{% url 'testweb:index_page' 'xlsxhtml' %}" class="list-a btn btn-inverse text-center"
+                       style="height: 50px;">
+                        <h5 class="text-center" style="color: white">
+                            查看表格
                         </h5>
                     </a>
                     <a href="{% url 'testweb:createdata' %}" class="list-a btn btn-inverse text-center"
