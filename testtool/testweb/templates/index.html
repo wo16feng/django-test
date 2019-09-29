@@ -15,7 +15,7 @@
             position: relative;
             padding-left: 205px;
             height: 100%;
-            {#overflow: hidden;#}
+        {#overflow: hidden;#}
         }
 
         div {
@@ -112,18 +112,21 @@
                         <span class="caret"></span>
                     </h5>
                 </div>
-
-                <div id="collapseOne" class="list-group collapse in">
+                {% if page != '/testweb/xlsxtable' %}
+                    <div id="collapseOne" class="list-group collapse in">
+                {% else %}
+                    <div id="collapseOne" class="list-group collapse">
+                {% endif %}
                     <a href="{% url 'testweb:index_page' 'module' %}" class="list-a btn btn-inverse text-center">
                         <h5 class="text-center" style="color: white">
                             通信协议管理
                         </h5>
                     </a>
-                    <a href="{% url 'testweb:index_page' 'struct' %}" class="list-a btn btn-inverse text-center">
-                        <h5 class="text-center" style="color: white">
-                            通信协议管理
-                        </h5>
-                    </a>
+                <a href="{% url 'testweb:index_page' 'struct' %}" class="list-a btn btn-inverse text-center">
+                    <h5 class="text-center" style="color: white">
+                        通信协议管理
+                    </h5>
+                </a>
                 </div>
 
                 <div class="panel-heading" style="color: white;background-color:#222222;">
@@ -134,27 +137,38 @@
                         <span class="caret"></span>
                     </h5>
                 </div>
-                <div id="collapseTwo" class="list-group collapse">
-                    <a href="{% url 'testweb:createdata' %}" class="list-a btn btn-inverse text-center" style="height: 50px;">
+                {% if page == '/testweb/xlsxtable' %}
+                    <div id="collapseTwo" class="list-group collapse in">
+                {% else %}
+                    <div id="collapseTwo" class="list-group collapse">
+                {% endif %}
+                    <a href="{% url 'testweb:index_page' 'xlsxtable' %}" class="list-a btn btn-inverse text-center"
+                       style="height: 50px;">
+                        <h5 class="text-center" style="color: white">
+                            生成表格模板
+                        </h5>
+                    </a>
+                    <a href="{% url 'testweb:createdata' %}" class="list-a btn btn-inverse text-center"
+                       style="height: 50px;">
                         <h5 class="text-center" style="color: white">
                             生成数据
                         </h5>
                     </a>
                 </div>
+                </div>
             </div>
         </div>
+        <div class="header">
+            <a href="#" class="header-a">
+                你好!
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                安全退出
+            </a>
+        </div>
+        <div class="embed-responsive embed-responsive-16by12">
+            <iframe class="embed-responsive-item" src="{{ page }}" id="iframe_page" scrolling="auto"></iframe>
+        </div>
     </div>
-    <div class="header">
-        <a href="#" class="header-a">
-            你好!
-            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            安全退出
-        </a>
-    </div>
-    <div class="embed-responsive embed-responsive-16by12">
-        <iframe class="embed-responsive-item" src="{{ page }}" id="iframe_page" scrolling="auto"></iframe>
-    </div>
-</div>
 
 </body>
 </html>

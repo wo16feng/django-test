@@ -4,6 +4,10 @@ path = ''
 zippath = ''
 uipath = ''
 
+tablepath = ''
+savepath = ''
+xlsxdata = []
+
 def updateSvn():
     if len(path) == 0:
         getPath()
@@ -32,6 +36,10 @@ def getPath():
     zippath = fo.__next__()[8:].splitlines()[0]
     global uipath
     uipath = fo.__next__()[7:].splitlines()[0]
+    global tablepath
+    tablepath = fo.__next__()[9:].splitlines()[0]
+    global savepath
+    savepath = fo.__next__()[9:].splitlines()[0]
     print(path, zippath,uipath)
     fo.close()
 
@@ -205,6 +213,30 @@ def getStruck(name,des,param):
     else:
         content = 'import PacketBase from "../PacketBase";\r' + content
 
+    content += '    }\r'
+    content += '}\r'
+    return content
+
+
+def getTableVo(name,data):
+    content = 'export default class '+ name +' implements IByteReader{\r'
+
+    for item in data:
+        if item.get('type') == 'string':
+            content += '    public ' + item['name'] + ':string;    // ' + item['des'] + '\r'
+        else:
+            content += '    public ' + item['name'] + ':number    // ' + item['des'] + '\r\r'
+    content += '    constructor(){\r    }\r\r'
+    content += '    public readFromByte(bytes:laya.utils.Byte){\r'
+    for item in data:
+        if item.get('type') == 'string':
+            content += '        this.' + item['name'] + ' = bytes.getString();\r'
+        elif item.get('type') == 'byte':
+            content += '        this.' + item['name'] + ' = bytes.getUint8();\r'
+        elif item.get('type') == 'short':
+            content += '        this.' + item['name'] + ' = bytes.getUint16();\r'
+        elif item.get('type') == 'int':
+            content += '        this.' + item['name'] + ' = bytes.getUint32();\r'
     content += '    }\r'
     content += '}\r'
     return content

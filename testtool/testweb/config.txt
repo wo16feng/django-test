@@ -1,3 +1,5 @@
 PATH=E:\lhsy\plan\ui\src\net
 ZIPPATH=F:\python\jsonZib\
 UIPATH=E:\lhsy\plan\ui\
+XLSXPATH=E:\lhsy\plan\table\
+SAVEPATH=E:\lhsy\plan\ui\src\table\

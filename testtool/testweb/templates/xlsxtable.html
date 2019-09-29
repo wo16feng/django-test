@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格模板生成器</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .wrapper {
+            padding: 22px 106px 10px 40px;
+            background: #FFF;
+        }
+
+        body {
+            font-family: "Microsoft YaHei";
+            color: #333;
+            background: #FFF;
+
+        }
+
+        .common-header {
+            padding-top: 10px;
+            border-bottom: 1px solid #DDD;
+            min-width: 550px;
+        }
+
+        .part {
+            height: 32px;
+            line-height: 32px;
+            display: inline;
+            float: left;
+            padding: 0 10px 10px 0px;
+            padding-bottom: 40px;
+        }
+
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:after {
+            display: block;
+            content: '\200B';
+            height: 0;
+            clear: both;
+        }
+
+        .wrap-input {
+            position: relative;
+            display: inline;
+            float: left;
+            line-height: 30px;
+        }
+
+        .submit-a {
+            background: #546478;
+            color: #FFF;
+            padding: 0 12px;
+            cursor: pointer;
+            outline: none;
+            border: #FFFFFF;
+        }
+
+        label {
+            font-size: 14px;
+            float: left;
+            font-weight: normal;
+            cursor: default;
+        }
+
+        input {
+            width: 120px;
+            height: 30px;
+            padding: 0 0 0 10px;
+        }
+
+        .common-table {
+            padding-top: 15px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            font-size: inherit;
+            font-weight: normal;
+            border-color: grey;
+            display: table;
+        }
+
+        thead,
+        tbody {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+            font-size: 12px;
+        }
+
+        thead,
+        tr:nth-child(2n) {
+            background: #f5f6fa;
+        }
+
+        td {
+            height: 39px;
+            border: 1px solid #DDD;
+            text-align: center;
+        }
+
+        .modal-header {
+            border-radius: 6px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            height: 14px;
+            background: skyblue;
+        }
+
+        .close {
+            opacity: .5;
+        }
+
+        .modal-dialog {
+            margin-top: 10%;
+        }
+
+        fieldset {
+            border: 1px solid #D8D8D8;
+            padding: 10px;
+        }
+
+        legend {
+            padding: 3px 8px;
+            font-weight: 700;
+            border: 1px solid #D8D8D8;
+            background-color: #F9F9F9;
+            font-size: 12px;
+            width: auto;
+        }
+
+        .input-hidden {
+        }
+
+        .modal-footer {
+            text-align: left;
+        }
+
+        .btn-default {
+            height: 30px;
+            border-radius: 0px;
+            background: #546478;
+            cursor: pointer;
+
+            outline: none;
+            border: #FFFFFF;
+            color: #FFFFFF;
+        }
+
+        .btn-default:focus:focus,
+        .btn-default:hover,
+        .btn-default:active:focus {
+            border-radius: 0px;
+            outline: none;
+            background: #546478;
+            color: #FFFFFF;
+        }
+
+        .label-modal {
+            font-size: 12px;
+            float: left;
+            margin-right: 20px;
+            width: 60px;
+        }
+
+        .input-modal,
+        .input-modal-des {
+            height: 20px;
+            font-size: 12px;
+        }
+
+        .select-modal {
+            height: 20px;
+            border-style: inset;
+            border-color: initial;
+            border-image: initial;
+        }
+
+        .table-input {
+            border: 0;
+            background: none;
+            text-align: left;
+            width: 30px;
+            align-items: center;
+        }
+
+        a {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <form method="post" action="{% url 'testweb:xlsxtable_open' %}">
+        {% csrf_token %}
+        <div class="common-header clear">
+            <div class="part">
+                <label>打开地址：</label>
+                <div class="wrap-input">
+                    <input type="text" style="width: 250px" id="openurl" name="openurl" placeholder="地址信息">
+                </div>
+            </div>
+            <div class="part">
+                <label>保存地址：</label>
+                <div class="wrap-input">
+                    <input type="text" style="width: 250px" id="saveurl" name="saveurl" placeholder="地址信息">
+                </div>
+            </div>
+            <div class="part">
+                <input type="submit" name="search" class="submit-a" value="打开XLSX文件">
+            </div>
+            <label></label>
+        </div>
+    </form>
+    <form method="post" action="{% url 'testweb:xlsxtable_save' %}">
+        {% csrf_token %}
+        <div class="common-header clear">
+            <div class="part">
+                <label>文件名：</label>
+                <div class="wrap-input">
+                    <input type="text" name="filename" placeholder="文件名" value="{{ filename }}">
+                </div>
+            </div>
+            <div class="part">
+                <label>保存名字：</label>
+                <input type="text" name="savename" placeholder="保存名字" value="{{ savename }}">
+            </div>
+            <div class="part">
+                <input type="submit" name="search" class="submit-a" value="保存">
+            </div>
+            <label></label>
+        </div>
+        <div class="common-table">
+            <table>
+                <thead>
+                <tr>
+                    <td>字段描述</td>
+                    <td>字段命名</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td>{{ item.des }}</td>
+                        <td><input type="text" name="table{{ item.id }}" value="{{ item.name }}"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+</div>
+</body>
+<script>
+    $(function () {
+        openurl = $('#openurl');
+        saveurl = $('#saveurl');
+        $.get('/testweb/xlsxtable/init', function (dic) {
+            openurl.val(dic.openurl);
+            saveurl.val(dic.saveurl);
+        });
+    });
+</script>
+</html>

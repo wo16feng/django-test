@@ -38,6 +38,13 @@ urlpatterns = [
     path('struct/crate<int:code>', views.struck_creat, name='struck_creat'),
 
     path('createdata/', views.createdata, name='createdata'),#结构体列表
+
+
+    path('xlsxtable/', views.xlsxtable, name='xlsxtable'),#生成表格模板
+    path('xlsxtable/open', views.xlsxtable_open, name='xlsxtable_open'),#生成表格模板
+    path('xlsxtable/init', views.xlsxtable_init, name='xlsxtable_init'),#生成表格模板
+    path('xlsxtable/save', views.xlsxtable_save, name='xlsxtable_save'),#生成表格模板
+
     # test
     path('address/', views.address, name='address'),
     path('address/<int:address_id>', views.addressAPI, name='address'),

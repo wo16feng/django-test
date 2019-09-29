@@ -9,8 +9,11 @@ from .models import ModuleRspd
 from .models import ModuleStruct
 from django.db.models import Q
 from . import config as c
-
-
+import win32ui
+import re
+import xlrd
+import struct
+from .src import xlsxitem
 def index(request, page=None):
     if page != None:
         return render(request, 'index.html', {'page': '/testweb/' + page})
@@ -518,6 +521,67 @@ def struck_creat_write(code):
 def createdata(request):
     c.zipJsonSubmit()
     return render(request, 'showmsg.html', {'msg': "生成成功", 'page': 1})
+
+
+
+
+
+
+
+def xlsxtable(request):
+    return render(request, 'xlsxtable.html')
+
+def xlsxtable_init(request):
+    return JsonResponse({'openurl':c.tablepath,'saveurl':c.savepath}, content_type='application/json', safe=False)
+
+def xlsxtable_open(request):
+    dlg = win32ui.CreateFileDialog(1)  # 1表示打开文件对话框 0 是另存为
+    openurl = request.POST.get('openurl','')
+    saveurl = request.POST.get('saveurl', '')
+    if len(openurl) == 0:
+        dlg.SetOFNInitialDir('E:')  # 设置打开文件对话框中的初始显示目录
+    else:
+        dlg.SetOFNInitialDir(openurl)  # 设置打开文件对话框中的初始显示目录
+    if len(saveurl) > 0:
+        c.savepath = saveurl
+    flag = dlg.DoModal()
+    if 1 == flag:
+        filename = dlg.GetPathName()
+        filename = str(filename)
+        start = filename.rfind('\\')
+        end = filename.rfind('.xlsx')
+        c.tablepath = filename[0:start]
+        file_name = filename[start + 1:end]
+        save_name = file_name[0].upper() + file_name[1:] + 'Vo'
+        tem = xlrd.open_workbook(filename)
+        item = xlsxitem.ItemTool(tem)
+        item.tableName = file_name
+        c.xlsxdata = item.filtrate()
+        return render(request, 'xlsxtable.html',{'filename':file_name,'savename':save_name,'data':c.xlsxdata})
+    else:
+        print("取消打开文件...")
+        return render(request, 'xlsxtable.html')
+
+def xlsxtable_save(request):
+    filename = request.POST.get('filename', '')
+    savename = request.POST.get('savename', '')
+    if len(filename) == 0 or len(savename) == 0:
+        return render(request, 'showmsg.html', {'msg': "参数错误或未打开文件", 'page': 2})
+    data = c.xlsxdata
+    length = len(data)
+    for i in range(1,length + 1):
+        cur_name = request.POST.get('table' + str(i), '')
+        data[i-1].update({'name':cur_name})
+
+    content = c.getTableVo(savename,data)
+    fo = open(c.savepath + savename + '.ts', "w+", encoding='utf-8')
+    fo.write(content)
+    fo.close()
+    return render(request, 'showmsg.html', {'msg': "生成成功", 'page': 2})
+
+
+
+
 
 
 

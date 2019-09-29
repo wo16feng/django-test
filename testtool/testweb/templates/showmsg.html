@@ -70,8 +70,10 @@
         <div class="bottom"><a href="{% url 'testweb:module_code' module_id %}">如果您的浏览器没有自动跳转，请点击这里 </a></div>
     {% elif struck_id %}
         <div class="bottom"><a href="{% url 'testweb:struct' %}">如果您的浏览器没有自动跳转，请点击这里 </a></div>
-    {% elif page %}
+    {% elif page == 1 %}
         <div class="bottom"><a href="{% url 'testweb:index' %}">如果您的浏览器没有自动跳转，请点击这里 </a></div>
+    {% elif page == 2 %}
+        <div class="bottom"><a href="{% url 'testweb:xlsxtable' %}">如果您的浏览器没有自动跳转，请点击这里 </a></div>
     {% else %}
         <div class="bottom"><a href="javascript:history.back(-1);">如果您的浏览器没有自动跳转，请点击这里 </a></div>
     {% endif %}
